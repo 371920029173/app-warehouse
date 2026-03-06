@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { getDB } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   const session = await auth();

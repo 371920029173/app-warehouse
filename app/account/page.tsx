@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { getDB } from "@/lib/db";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export default async function AccountPage() {
   const session = await auth();
