@@ -1,0 +1,36 @@
+{
+  "name": "app-warehouse",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@cloudflare/next-on-pages": "1.9.0",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.1.5",
+    "html2canvas": "^1.4.1",
+    "bcryptjs": "^2.4.3",
+    "next": "13.4.2",
+    "next-auth": "^4.24.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-share": "^5.1.0",
+    "rss-parser": "^3.13.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.0"
+  }
+}

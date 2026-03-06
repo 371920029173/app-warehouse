@@ -1,0 +1,17 @@
+name = "app-warehouse"
+pages_build_output_dir = ".vercel/output/static"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "appwarehouse-db"
+database_id = "a13ddea6-7131-4f7b-bad4-80e10e88c8b8"
+
+[[kv_namespaces]]
+binding = "APP_KV"
+id = "2d0f3d2ab2794c3d9d9d7936c7e58820"
+
+[vars]
+NEXTAUTH_SECRET = "appwarehouse-nextauth-secret-change-me"
+NEXTAUTH_URL = "https://app-warehouse.pages.dev"
+NEXT_PUBLIC_APP_ORIGIN = "https://app-warehouse.pages.dev"
+
