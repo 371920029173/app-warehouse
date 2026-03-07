@@ -33,29 +33,32 @@ export default async function AccountPage() {
 
   const balance = balanceRow?.balance ?? 0;
 
+  type TunnelRow = {
+    id: string;
+    start_time: string;
+    end_time: string | null;
+    points_consumed: number;
+    auto_renew: number;
+  };
+  type FavRow = {
+    app_name: string;
+    app_version: string;
+    created_at: string;
+  };
+
   const tunnelRows = await db
     .prepare(
       "SELECT id, start_time, end_time, points_consumed, auto_renew FROM tunnel_usage WHERE user_id = ? ORDER BY start_time DESC LIMIT 20"
     )
     .bind(user.id)
-    .all<{
-      id: string;
-      start_time: string;
-      end_time: string | null;
-      points_consumed: number;
-      auto_renew: number;
-    }>();
+    .all<TunnelRow>();
 
   const favRows = await db
     .prepare(
       "SELECT app_name, app_version, created_at FROM app_collections WHERE user_id = ? ORDER BY created_at DESC LIMIT 20"
     )
     .bind(user.id)
-    .all<{
-      app_name: string;
-      app_version: string;
-      created_at: string;
-    }>();
+    .all<FavRow>();
 
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_ORIGIN ||
@@ -107,7 +110,7 @@ export default async function AccountPage() {
             {tunnelRows.results.length === 0 && (
               <p className="text-accent-silver/80">暂未使用过 Cloudflare 隧道。</p>
             )}
-            {tunnelRows.results.map((row) => (
+            {tunnelRows.results.map((row: TunnelRow) => (
               <div
                 key={row.id}
                 className="flex items-center justify-between gap-2 rounded-lg border border-accent-silver/20 bg-neutral-dark/60 px-2 py-1.5"
@@ -137,7 +140,7 @@ export default async function AccountPage() {
               暂无收藏，去应用仓库看看感兴趣的应用吧。
             </p>
           )}
-          {favRows.results.map((row, idx) => (
+          {favRows.results.map((row: FavRow, idx: number) => (
             <div
               key={`${row.app_name}-${idx}`}
               className="flex items-center justify-between gap-2 rounded-lg border border-accent-silver/20 bg-neutral-dark/60 px-2 py-1.5"
