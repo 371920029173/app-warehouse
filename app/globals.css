@@ -12,7 +12,32 @@
 }
 
 body {
-  @apply min-h-screen bg-gradient-to-br from-brand-primary via-neutral-dark to-black text-neutral-light antialiased;
+  @apply min-h-screen text-neutral-light antialiased;
+}
+
+/* 全局背景：多层渐变 + 噪点，参考现代 CSS 设计 */
+.app-bg {
+  min-height: 100vh;
+  background-color: #050810;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 20% 10%, rgba(13, 45, 80, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 80% 90%, rgba(180, 134, 11, 0.12) 0%, transparent 45%),
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(11, 28, 44, 0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #0b1c2c 0%, #0a0e14 50%, #050810 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+.app-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+.app-bg > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card-elevated {

@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { AdBar } from "@/components/AdBar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -8,6 +9,10 @@ export const metadata: Metadata = {
   title: "AppWarehouse · 通用应用仓库与触点隧道",
   description:
     "AppWarehouse 是基于 Cloudflare 免费生态构建的通用应用仓库与 Cloudflare 隧道平台，支持应用分类导航、版本跳转、触点货币体系与广告变现。",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -17,7 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className={`${inter.variable} bg-brand-primary text-neutral-light`}>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
+      <body className={`${inter.variable} app-bg text-neutral-light`}>
         <div className="relative flex min-h-screen flex-col">
           <header className="border-b border-accent-silver/20 bg-brand-primary/80 backdrop-blur-xl">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
@@ -59,6 +67,9 @@ export default function RootLayout({
               </nav>
             </div>
           </header>
+          <div className="border-b border-white/5 px-4 py-2 md:px-6">
+            <AdBar />
+          </div>
           <main className="flex-1">{children}</main>
           <footer className="border-t border-accent-silver/20 bg-neutral-dark/80">
             <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-4 text-[11px] text-accent-silver md:flex-row md:px-6">

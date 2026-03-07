@@ -3,6 +3,7 @@ export type AppCategory =
   | "design"
   | "dev"
   | "media"
+  | "games"
   | "social"
   | "system"
   | "education"
@@ -37,22 +38,26 @@ export interface AppMeta {
   versions: AppVersion[];
 }
 
-export const CATEGORIES: { id: AppCategory; name: string }[] = [
-  { id: "office", name: "办公软件" },
-  { id: "design", name: "设计工具" },
-  { id: "dev", name: "开发工具" },
-  { id: "media", name: "娱乐影音" },
-  { id: "social", name: "通讯社交" },
-  { id: "system", name: "系统工具" },
-  { id: "education", name: "教育学习" },
-  { id: "lifestyle", name: "生活服务" }
+export const CATEGORIES: { id: AppCategory; name: string; icon: string }[] = [
+  { id: "office", name: "办公软件", icon: "BriefcaseIcon" },
+  { id: "design", name: "设计工具", icon: "PaintBrushIcon" },
+  { id: "dev", name: "开发工具", icon: "CodeBracketIcon" },
+  { id: "media", name: "娱乐影音", icon: "FilmIcon" },
+  { id: "games", name: "游戏", icon: "PlayCircleIcon" },
+  { id: "social", name: "通讯社交", icon: "ChatBubbleLeftRightIcon" },
+  { id: "system", name: "系统工具", icon: "Cog6ToothIcon" },
+  { id: "education", name: "教育学习", icon: "AcademicCapIcon" },
+  { id: "lifestyle", name: "生活服务", icon: "HomeIcon" },
 ];
 
 // 说明：
-// 1. 这里先提供每个类别若干示例应用，结构已经固定，可以按同样格式持续扩展到 500+。
-// 2. 建议后续将这些数据迁移到 D1 表中，通过脚本批量导入，以便维护与检索。
+// 1. 这里先提供每个类别若干示例应用，结构已经固定，可结合 apps-extended.ts 扩展。
+// 2. 建议后续将数据迁移到 D1 表中，通过脚本批量导入。
 
-export const APPS: AppMeta[] = [
+import { APPS_EXTENDED } from "./apps-extended";
+import { APPS_GENERATED } from "./apps-generated";
+
+const BASE_APPS: AppMeta[] = [
   // 办公软件示例
   {
     slug: "microsoft-office",
@@ -276,6 +281,11 @@ export const APPS: AppMeta[] = [
   }
 ];
 
+const _allApps: AppMeta[] = [...BASE_APPS, ...APPS_EXTENDED, ...(APPS_GENERATED as AppMeta[])];
+export const APPS: AppMeta[] = _allApps.filter(
+  (app, i, arr) => arr.findIndex((a) => a.slug === app.slug) === i
+);
+
 export function searchApps(keyword: string): AppMeta[] {
   const q = keyword.trim().toLowerCase();
   if (!q) return [];
@@ -288,10 +298,40 @@ export function searchApps(keyword: string): AppMeta[] {
   });
 }
 
+export function searchAppsPaginated(
+  keyword: string,
+  page: number,
+  perPage: number = APPS_PER_PAGE
+): { results: AppMeta[]; total: number; totalPages: number } {
+  const all = searchApps(keyword);
+  const total = all.length;
+  const totalPages = total === 0 ? 1 : Math.ceil(total / perPage);
+  const p = Math.max(1, Math.min(page, totalPages));
+  const start = (p - 1) * perPage;
+  const results = all.slice(start, start + perPage);
+  return { results, total, totalPages };
+}
+
+export const APPS_PER_PAGE = 24;
+
 export function getAppsByCategory(category: AppCategory): AppMeta[] {
   return APPS.filter((app) => app.category === category).sort((a, b) =>
     a.name.localeCompare(b.name, "zh-CN")
   );
+}
+
+export function getAppsByCategoryPaginated(
+  category: AppCategory,
+  page: number,
+  perPage: number = APPS_PER_PAGE
+): { apps: AppMeta[]; total: number; totalPages: number } {
+  const all = getAppsByCategory(category);
+  const total = all.length;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const p = Math.max(1, Math.min(page, totalPages));
+  const start = (p - 1) * perPage;
+  const apps = all.slice(start, start + perPage);
+  return { apps, total, totalPages };
 }
 
 export function getAppBySlug(slug: string): AppMeta | undefined {

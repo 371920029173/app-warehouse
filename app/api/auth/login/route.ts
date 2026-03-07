@@ -54,9 +54,10 @@ export async function POST(req: NextRequest) {
   });
 
   const res = NextResponse.json({ ok: true });
+  const isSecure = typeof process.env.NEXTAUTH_URL === "string" && process.env.NEXTAUTH_URL.startsWith("https://");
   res.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isSecure || process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",

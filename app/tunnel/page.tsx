@@ -1,24 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { AdPopup } from "@/components/AdPopup";
 
 export default function TunnelPage() {
   const [targetUrl, setTargetUrl] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [tunnelUrl, setTunnelUrl] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [showAdPopup, setShowAdPopup] = useState(false);
 
   async function handleStartTunnel() {
     setStatus(null);
     setTunnelUrl(null);
     setCountdown(null);
+    setShowAdPopup(false);
 
     try {
       const res = await fetch("/api/tunnel/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ targetUrl }),
       });
+
+      if (res.status === 402) {
+        setStatus("触点不足。请观看下方广告获得触点后再试。");
+        setShowAdPopup(true);
+        return;
+      }
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -118,6 +128,12 @@ export default function TunnelPage() {
           </ul>
         </div>
       </div>
+
+      <AdPopup
+        open={showAdPopup}
+        onClose={() => setShowAdPopup(false)}
+        title="触点不足 · 观看广告获得 1 触点"
+      />
     </div>
   );
 }
