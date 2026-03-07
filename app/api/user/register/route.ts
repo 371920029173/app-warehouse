@@ -3,7 +3,7 @@ import { getDB } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   const { email, password, name, ref } = (await req.json().catch(() => ({}))) as {

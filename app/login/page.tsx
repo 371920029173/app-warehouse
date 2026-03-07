@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -28,12 +27,14 @@ export default function LoginPage() {
         setMessage("注册成功，请继续登录。");
         setMode("login");
       } else {
-        const res = await signIn("email-login", {
-          email,
-          password,
-          redirect: false,
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          credentials: "include",
         });
-        if (res?.error) throw new Error(res.error);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || "登录失败");
         setMessage("登录成功，即将跳转。");
         window.location.href = "/account";
       }
@@ -133,15 +134,6 @@ export default function LoginPage() {
           </form>
 
           <div className="space-y-2 text-[11px] text-accent-silver">
-            <button
-              type="button"
-              onClick={() =>
-                signIn("google", { callbackUrl: "/account", redirect: true })
-              }
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-silver/40 bg-neutral-dark/60 px-3 py-1.5 text-xs text-accent-silver transition-colors hover:border-accent-gold hover:text-accent-gold"
-            >
-              使用 Google 登录
-            </button>
             {message && (
               <p className="text-center text-[11px] text-accent-gold">
                 {message}

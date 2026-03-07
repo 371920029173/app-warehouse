@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { getDB } from "@/lib/db";
+import LogoutButton from "@/components/LogoutButton";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 export default async function AccountPage() {
   const session = await auth();
@@ -78,6 +79,7 @@ export default async function AccountPage() {
           <p className="text-xs text-accent-silver/90">
             你的触点余额、隧道记录与收藏都会与该账户绑定，并存储于 Cloudflare D1。
           </p>
+          <LogoutButton />
         </div>
         <div className="card-elevated space-y-2 p-4 text-sm text-accent-silver">
           <p className="text-xs uppercase tracking-[0.16em] text-accent-silver">
