@@ -42,14 +42,23 @@ body {
 
 .card-elevated {
   @apply rounded-2xl border border-white/5 bg-neutral-dark/80 shadow-[0_18px_45px_rgba(0,0,0,0.55)] backdrop-blur-xl;
+  transition: box-shadow 0.3s ease-out, transform 0.3s ease-out, border-color 0.2s ease-out;
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-accent-gold to-amber-400 px-4 py-2 text-sm font-semibold text-black shadow transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg;
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-accent-gold to-amber-400 px-4 py-2 text-sm font-semibold text-black shadow;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease-out, opacity 0.2s ease-out;
+}
+.btn-primary:hover {
+  @apply -translate-y-0.5 shadow-lg;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center rounded-full border border-accent-silver/60 bg-brand-primary/40 px-4 py-2 text-sm font-medium text-neutral-light transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-accent-gold/80 hover:text-accent-gold;
+  @apply inline-flex items-center justify-center rounded-full border border-accent-silver/60 bg-brand-primary/40 px-4 py-2 text-sm font-medium text-neutral-light;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease-out, color 0.2s ease-out;
+}
+.btn-secondary:hover {
+  @apply -translate-y-0.5 border-accent-gold/80 text-accent-gold;
 }
 
 .layout-shell {

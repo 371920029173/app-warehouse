@@ -78,14 +78,14 @@ export function Pagination({
           linkOrButton(
             prevPage,
             "上一页",
-            "rounded-lg border border-white/20 px-3 py-1.5 text-sm text-accent-silver transition hover:border-accent-gold/60 hover:text-accent-gold"
+            "rounded-lg border border-white/20 px-3 py-1.5 text-sm text-accent-silver transition-all duration-200 ease-out hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-md"
           )}
         <div className="flex items-center gap-1">
           {pages.map((p) =>
             p === currentPage ? (
               <span
                 key={p}
-                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-accent-gold/70 bg-accent-gold/20 px-2 text-sm font-medium text-accent-gold"
+                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-accent-gold/70 bg-accent-gold/20 px-2 text-sm font-medium text-accent-gold transition-colors duration-200"
               >
                 {p}
               </span>
@@ -94,7 +94,7 @@ export function Pagination({
                 key={p}
                 type="button"
                 onClick={() => onPageChange(p)}
-                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-white/20 px-2 text-sm text-accent-silver transition hover:border-accent-gold/60 hover:text-accent-gold"
+                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-white/20 px-2 text-sm text-accent-silver transition-all duration-200 ease-out hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-md"
               >
                 {p}
               </button>
@@ -102,7 +102,7 @@ export function Pagination({
               <Link
                 key={p}
                 href={buildUrl(p)}
-                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-white/20 px-2 text-sm text-accent-silver transition hover:border-accent-gold/60 hover:text-accent-gold"
+                className="flex h-8 min-w-[2rem] items-center justify-center rounded-lg border border-white/20 px-2 text-sm text-accent-silver transition-all duration-200 ease-out hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-md"
               >
                 {p}
               </Link>
@@ -113,7 +113,7 @@ export function Pagination({
           linkOrButton(
             nextPage,
             "下一页",
-            "rounded-lg border border-white/20 px-3 py-1.5 text-sm text-accent-silver transition hover:border-accent-gold/60 hover:text-accent-gold"
+            "rounded-lg border border-white/20 px-3 py-1.5 text-sm text-accent-silver transition-all duration-200 ease-out hover:border-accent-gold/60 hover:text-accent-gold hover:shadow-md"
           )}
       </div>
     </nav>

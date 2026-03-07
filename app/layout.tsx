@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ConditionalAdBar } from "@/components/LayoutWithAd";
+import { HeaderNav } from "@/components/HeaderNav";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -42,29 +43,7 @@ export default function RootLayout({
                   </span>
                 </div>
               </a>
-              <nav className="flex items-center gap-3 text-xs md:gap-4 md:text-sm">
-                <a
-                  href="/apps"
-                  className="text-neutral-light/80 transition-colors hover:text-neutral-light"
-                >
-                  应用仓库
-                </a>
-                <a
-                  href="/tunnel"
-                  className="text-neutral-light/80 transition-colors hover:text-neutral-light"
-                >
-                  Cloudflare 隧道
-                </a>
-                <a
-                  href="/account"
-                  className="text-neutral-light/80 transition-colors hover:text-neutral-light"
-                >
-                  我的
-                </a>
-                <a href="/login" className="btn-secondary">
-                  登录 / 注册
-                </a>
-              </nav>
+              <HeaderNav />
             </div>
           </header>
           <ConditionalAdBar />
