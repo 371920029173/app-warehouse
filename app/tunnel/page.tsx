@@ -64,13 +64,13 @@ export default function TunnelPage() {
     <div className="layout-shell max-w-3xl">
       <div className="space-y-4">
         <h1 className="text-lg font-semibold text-neutral-light">
-          Cloudflare 隧道 · 触点驱动访问
+          Cloudflare 隧道 · 小范围代理访问
         </h1>
         <p className="text-xs text-accent-silver">
-          输入目标网址，消耗 1 触点获得 15 分钟内有效的访问链接。点击后由<strong>你本地浏览器直连目标</strong>，只要当前网络能访问该目标即可打开。
+          输入目标网址，消耗 1 触点获得 15 分钟内有效的隧道链接。<strong>经代理打开</strong>时由我们服务器代你请求目标再传回，可在你当前网络无法直连该站时使用。
         </p>
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-[11px] text-amber-200/90">
-          <strong>已知限制：</strong>本功能不提供翻墙/解封。若目标站在你当前网络下不可达（如地区或运营商封锁），无法通过本产品绕过，需自行使用 VPN 等后再访问本站使用跳转。
+          <strong>提示：</strong>部分大站（如 Google）会对代理做人机校验或拦截，可优先尝试小站、文档站、GitHub、Stack Overflow 等。若你网络已能直连目标，可用「一键跳转」省流量。
         </div>
 
         <div className="card-elevated space-y-3 p-4">
@@ -104,46 +104,45 @@ export default function TunnelPage() {
 
           {tunnelUrl && (
             <div className="space-y-3 text-xs text-accent-silver">
-              <p>你的专属链接（仅当前登录用户可见，15 分钟内有效）：</p>
+              <p>你的专属隧道链接（仅当前登录用户可见，15 分钟内有效）：</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href={tunnelUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/30 px-4 py-3 text-emerald-300 transition-colors hover:bg-emerald-600/50 font-medium"
+                >
+                  <ArrowTopRightOnSquareIcon className="h-5 w-5" />
+                  经代理在新标签打开（翻墙用）
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setShowFrame((s) => !s)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-4 py-3 text-accent-silver transition-colors hover:border-accent-gold/50 hover:text-accent-gold"
+                >
+                  <ComputerDesktopIcon className="h-5 w-5" />
+                  {showFrame ? "关闭小窗" : "在页面内小窗打开（翻墙用）"}
+                </button>
+              </div>
+              {showFrame && (
+                <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
+                  <iframe
+                    title="隧道小窗"
+                    src={tunnelUrl}
+                    className="h-[420px] w-full border-0 bg-white"
+                  />
+                </div>
+              )}
+              <p className="text-[11px] text-neutral-500">
+                若目标站出现人机校验或无法打开，可换小站/文档站尝试，或用下方一键直连（仅在你网络能访问该目标时有效）。
+              </p>
               <a
                 href={`${tunnelUrl}${tunnelUrl.includes("?") ? "&" : "?"}direct=1`}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/30 px-4 py-3 text-emerald-300 transition-colors hover:bg-emerald-600/50 font-medium"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-3 py-2 text-[11px] text-neutral-400 hover:text-accent-gold"
               >
-                <ArrowTopRightOnSquareIcon className="h-5 w-5" />
-                一键跳转（本页会跳转到目标，请确保当前网络能访问该目标）
+                <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                一键跳转（本页直连目标，不经过代理）
               </a>
-              <p className="text-[11px] text-neutral-500">
-                请在本页直接点击上方按钮，勿新开标签打开链接，否则可能无法带登录态。
-              </p>
-              <details className="text-[11px] text-neutral-500">
-                <summary className="cursor-pointer text-accent-silver hover:text-accent-gold">备用方式（多数网站会拦截，仅作尝试）</summary>
-                <div className="mt-2 space-y-2">
-                  <a
-                    href={tunnelUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="block text-accent-gold/80 hover:underline"
-                  >
-                    经代理在新标签打开
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => setShowFrame((s) => !s)}
-                    className="block text-accent-gold/80 hover:underline"
-                  >
-                    {showFrame ? "关闭" : "在页面内小窗打开"}
-                  </button>
-                  {showFrame && (
-                    <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
-                      <iframe
-                        title="隧道小窗"
-                        src={tunnelUrl}
-                        className="h-[360px] w-full border-0 bg-white"
-                      />
-                    </div>
-                  )}
-                </div>
-              </details>
             </div>
           )}
         </div>
@@ -151,9 +150,8 @@ export default function TunnelPage() {
         <div className="card-elevated space-y-2 p-4 text-[11px] text-accent-silver">
           <p className="font-semibold text-neutral-light">使用与合规说明</p>
           <ul className="list-disc list-inside space-y-1">
-            <li>仅对登录用户开放，需 ≥1 个有效触点；点击跳转后由你本地浏览器直连目标。</li>
+            <li>仅对登录用户开放，需 ≥1 个有效触点。经代理打开时由我们服务器请求目标再传回，供小范围代理访问使用。</li>
             <li>严禁用于攻击、扫描、传播违法内容等用途，如有违规可随时封禁账号。</li>
-            <li>本功能不提供翻墙或解封能力，能否打开目标仅取决于你当前网络是否可达该目标。</li>
           </ul>
         </div>
       </div>
