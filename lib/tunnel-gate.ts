@@ -41,7 +41,7 @@ async function hmacSign(message: string): Promise<ArrayBuffer> {
 
 async function hmacVerify(
   message: string,
-  signature: BufferSource
+  signature: ArrayBuffer
 ): Promise<boolean> {
   const key = await crypto.subtle.importKey(
     "raw",
@@ -83,7 +83,10 @@ export async function verifyTunnelGateToken(
     return null;
   }
   const sigBytes = fromBase64Url(sigB64);
-  const ok = await hmacVerify(payloadStr, sigBytes);
+  // 复制到新 Uint8Array，其 buffer 为 ArrayBuffer，满足严格类型（Cloudflare 构建）
+  const sigCopy = new Uint8Array(sigBytes.length);
+  sigCopy.set(sigBytes);
+  const ok = await hmacVerify(payloadStr, sigCopy.buffer as ArrayBuffer);
   if (!ok) return null;
   let payload: GatePayload;
   try {
