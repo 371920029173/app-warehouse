@@ -70,7 +70,7 @@ export default function TunnelPage() {
           消耗 1 触点获得 15 分钟内有效的隧道。<strong>经代理打开</strong>后，当前页面和页面里的链接都会继续走代理，相当于只在这条浏览路径上「梯子」生效。
         </p>
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-[11px] text-amber-200/90">
-          <strong>提示：</strong>部分大站会对代理做人机校验，可优先试小站、文档站、GitHub 等。若你网络已能直连目标，可用「一键跳转」直连。
+          <strong>提示：</strong>部分大站会对代理做人机校验或返回简化版页面（如 Facebook 简版登录）；已尽量模拟真实浏览器请求，若仍非原站样式多为目标站对代理 IP 的策略限制。可优先试小站、文档站、GitHub 等。
         </div>
 
         <div className="card-elevated space-y-3 p-4">

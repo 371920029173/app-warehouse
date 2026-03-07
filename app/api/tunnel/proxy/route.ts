@@ -111,7 +111,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 302);
   }
 
-  // 构建上游请求头：优先使用客户端头（更像真实浏览器），缺失时用默认值
+  // 构建上游请求头：尽量贴近真实桌面浏览器，减少目标站返回「简化版」页面（如 Facebook 简版登录）
+  const targetOrigin = new URL(targetUrl).origin;
   const forwardHeaders = new Headers();
   forwardHeaders.set(
     "User-Agent",
@@ -125,18 +126,34 @@ export async function GET(req: NextRequest) {
   );
   forwardHeaders.set(
     "Accept-Language",
-    req.headers.get("accept-language") || "zh-CN,zh;q=0.9,en;q=0.8"
+    req.headers.get("accept-language") || "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
   );
   forwardHeaders.set("Accept-Encoding", "gzip, deflate, br");
-  forwardHeaders.set("Cache-Control", "no-cache");
+  forwardHeaders.set("Cache-Control", "max-age=0");
   forwardHeaders.set("Pragma", "no-cache");
   forwardHeaders.set("Upgrade-Insecure-Requests", "1");
+  forwardHeaders.set("Referer", targetOrigin + "/");
+  forwardHeaders.set(
+    "Sec-CH-UA",
+    req.headers.get("sec-ch-ua") ||
+      '"Chromium";v="131", "Google Chrome";v="131", "Not_A Brand";v="24"'
+  );
+  forwardHeaders.set(
+    "Sec-CH-UA-Mobile",
+    req.headers.get("sec-ch-ua-mobile") || "?0"
+  );
+  forwardHeaders.set(
+    "Sec-CH-UA-Platform",
+    req.headers.get("sec-ch-ua-platform") || '"Windows"'
+  );
   const secFetch = req.headers.get("sec-fetch-dest");
   if (secFetch) forwardHeaders.set("Sec-Fetch-Dest", secFetch);
   if (req.headers.get("sec-fetch-mode"))
     forwardHeaders.set("Sec-Fetch-Mode", req.headers.get("sec-fetch-mode")!);
   if (req.headers.get("sec-fetch-site"))
     forwardHeaders.set("Sec-Fetch-Site", req.headers.get("sec-fetch-site")!);
+  if (req.headers.get("sec-fetch-user"))
+    forwardHeaders.set("Sec-Fetch-User", req.headers.get("sec-fetch-user")!);
 
   const upstreamRes = await fetch(targetUrl, {
     headers: forwardHeaders,
