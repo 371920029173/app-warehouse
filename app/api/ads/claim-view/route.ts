@@ -8,6 +8,7 @@ export const runtime = "edge";
 const VALID_SLOTS = new Set([
   "bar-1", "bar-2", "bar-3", "bar-4", "bar-5", "bar-6", "bar-7", "bar-8",
   "popup-tunnel",
+  ...Array.from({ length: 10 }, (_, i) => `flow-${i + 1}`),
 ]);
 
 export async function POST(req: NextRequest) {
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
   const userId = (session?.user as { id?: string })?.id;
   if (!userId) {
     return NextResponse.json(
-      { message: "请先登录后再通过浏览广告获取触点" },
+      { message: "请先登录后再通过点击广告获取触点" },
       { status: 401 }
     );
   }

@@ -1,25 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-
-const VIEW_SECONDS = 3;
+import { useState } from "react";
 
 type Props = {
   slotId: string;
   title?: string;
   className?: string;
+  /** 点击广告跳转的落地页，不传则不可点击；仅点击才计费/领取触点 */
+  clickUrl?: string;
 };
 
-export function FakeAdSlot({ slotId, title = "推荐", className = "" }: Props) {
-  const [viewed, setViewed] = useState(false);
+export function FakeAdSlot({ slotId, title = "推荐", className = "", clickUrl }: Props) {
   const [claimed, setClaimed] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const viewedRef = useRef(false);
 
-  const claim = useCallback(async () => {
-    if (claimed) return;
+  async function handleClick(e: React.MouseEvent) {
+    if (!clickUrl) return;
+    e.preventDefault();
     try {
       const res = await fetch("/api/ads/claim-view", {
         method: "POST",
@@ -30,60 +26,31 @@ export function FakeAdSlot({ slotId, title = "推荐", className = "" }: Props) 
       const data = await res.json().catch(() => ({}));
       if (data.claimed) setClaimed(true);
     } catch {
-      // ignore
+      // 接口失败也允许跳转
     }
-  }, [slotId, claimed]);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [e] = entries;
-        if (!e?.isIntersecting) {
-          if (timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-          }
-          setCountdown(null);
-          return;
-        }
-        if (viewedRef.current) return;
-        viewedRef.current = true;
-        setViewed(true);
-        setCountdown(VIEW_SECONDS);
-        let left = VIEW_SECONDS;
-        timerRef.current = setInterval(() => {
-          left -= 1;
-          setCountdown(left);
-          if (left <= 0 && timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-            claim();
-          }
-        }, 1000);
-      },
-      { threshold: 0.6 }
-    );
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [claim]);
+    window.open(clickUrl, "_blank", "noopener,noreferrer");
+  }
 
   return (
     <div
-      ref={ref}
       className={`flex flex-col items-center justify-center rounded-xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-3 text-center ${className}`}
     >
       <span className="mb-1 text-[10px] uppercase text-neutral-500">{title}</span>
-      <div className="h-14 w-full rounded-lg bg-neutral-700/50 flex items-center justify-center text-xs text-neutral-400">
-        [ 测试广告位 ]
-      </div>
-      {viewed && countdown !== null && countdown > 0 && !claimed && (
-        <p className="mt-1 text-[10px] text-amber-400">有效浏览 {countdown}s 后 +1 触点</p>
+      {clickUrl ? (
+        <button
+          type="button"
+          onClick={handleClick}
+          className="flex h-14 w-full items-center justify-center rounded-lg bg-neutral-700/50 text-xs text-neutral-400 transition-colors hover:bg-neutral-600/60 hover:text-accent-gold"
+        >
+          [ 点击进入 ]
+        </button>
+      ) : (
+        <div className="flex h-14 w-full items-center justify-center rounded-lg bg-neutral-700/50 text-xs text-neutral-400">
+          [ 测试广告位 ]
+        </div>
+      )}
+      {clickUrl && !claimed && (
+        <p className="mt-1 text-[10px] text-amber-400">点击进入即得 1 触点（每广告位每日限 1 次）</p>
       )}
       {claimed && <p className="mt-1 text-[10px] text-green-400">已领取 1 触点</p>}
     </div>

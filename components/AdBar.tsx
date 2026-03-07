@@ -18,6 +18,20 @@ const SLOT_LABELS = [
   "更多推荐",
 ];
 
+/** 每个广告位点击跳转的落地页，可后续改为后台配置 */
+const SLOT_CLICK_URLS: (string | undefined)[] = [
+  "https://www.cloudflare.com/products/zero-trust/",
+  "https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/",
+  "https://www.cloudflare.com/products/zero-trust/",
+  "https://developers.cloudflare.com/",
+  "https://www.cloudflare.com/products/zero-trust/",
+  "https://developers.cloudflare.com/",
+  "https://www.cloudflare.com/",
+  "https://www.cloudflare.com/products/zero-trust/",
+  "https://developers.cloudflare.com/",
+  "https://www.cloudflare.com/",
+];
+
 /** 广告框不可折叠，预留 10 个位置，每 6 秒切换下一个 */
 export function AdBar() {
   const [index, setIndex] = useState(0);
@@ -56,7 +70,7 @@ export function AdBar() {
     <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-black/20">
       <div className="px-4 py-2">
         <p className="text-xs font-medium uppercase tracking-wider text-neutral-400">
-          广告 · 每 6 秒切换 · 有效浏览 3 秒得 1 触点
+          广告 · 每 6 秒切换 · 点击进入得 1 触点（每位每日限 1 次）
         </p>
       </div>
       <div className="px-3 pb-3 pt-0">
@@ -74,6 +88,7 @@ export function AdBar() {
                 slotId={slotId}
                 title={SLOT_LABELS[i]}
                 className="h-full min-h-0"
+                clickUrl={SLOT_CLICK_URLS[i]}
               />
             </div>
           ))}

@@ -47,9 +47,16 @@ export function HeaderNav() {
       </Link>
       {mounted &&
         (user?.id ? (
-          <Link href="/account" className="btn-secondary">
-            个人中心
-          </Link>
+          <button
+            type="button"
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+              window.location.href = "/";
+            }}
+            className="btn-secondary"
+          >
+            退出登录
+          </button>
         ) : (
           <Link href="/login" className="btn-secondary">
             登录 / 注册

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowTopRightOnSquareIcon, ComputerDesktopIcon } from "@heroicons/react/24/outline";
 import { AdPopup } from "@/components/AdPopup";
 
 export default function TunnelPage() {
@@ -9,6 +10,7 @@ export default function TunnelPage() {
   const [tunnelUrl, setTunnelUrl] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [showAdPopup, setShowAdPopup] = useState(false);
+  const [showFrame, setShowFrame] = useState(false);
 
   async function handleStartTunnel() {
     setStatus(null);
@@ -103,16 +105,43 @@ export default function TunnelPage() {
           )}
 
           {tunnelUrl && (
-            <div className="space-y-2 text-xs text-accent-silver">
+            <div className="space-y-3 text-xs text-accent-silver">
               <p>你的专属隧道链接（仅当前登录用户可见）：</p>
-              <a
-                href={tunnelUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="break-all text-accent-gold hover:text-amber-300"
-              >
-                {tunnelUrl}
-              </a>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href={tunnelUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-amber-500/20 px-3 py-2 text-accent-gold transition-colors hover:bg-amber-500/30 hover:text-amber-300"
+                >
+                  <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                  在新窗口直接打开
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setShowFrame((s) => !s)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-3 py-2 text-accent-silver transition-colors hover:border-accent-gold/50 hover:text-accent-gold"
+                >
+                  <ComputerDesktopIcon className="h-4 w-4" />
+                  {showFrame ? "关闭" : "在页面内小窗打开"}
+                </button>
+              </div>
+              <p className="break-all font-mono text-[11px] text-neutral-500">{tunnelUrl}</p>
+              <p className="text-[11px] text-neutral-500">
+                若目标站出现安全验证/人机校验页，属该站策略，可换其他站点或网络再试。
+              </p>
+              {showFrame && (
+                <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
+                  <p className="border-b border-white/10 px-3 py-1.5 text-[11px] text-neutral-500">
+                    部分网站禁止被嵌入，若无法显示可点击「在新窗口直接打开」
+                  </p>
+                  <iframe
+                    title="隧道小窗"
+                    src={tunnelUrl}
+                    className="h-[420px] w-full border-0 bg-white"
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -132,7 +161,7 @@ export default function TunnelPage() {
       <AdPopup
         open={showAdPopup}
         onClose={() => setShowAdPopup(false)}
-        title="触点不足 · 观看广告获得 1 触点"
+        title="触点不足 · 点击广告获得 1 触点"
       />
     </div>
   );
