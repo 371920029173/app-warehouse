@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { auth } from "@/lib/auth";
-import { createTunnelGateToken } from "@/lib/tunnel-gate";
 
 export const runtime = "edge";
 
@@ -64,12 +63,9 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // 直接跳转模式：先到闸门页 /tunnel/go?t=token，再跳目标，保留“隧道”体验且不易被目标站拦截
+  // 直接跳转：校验通过后 302 到目标，由用户浏览器直连，不易被目标站拦截（无闸门页、无 token，实现最简）
   if (reqUrl.searchParams.get("direct") === "1") {
-    const token = await createTunnelGateToken(id, targetUrl);
-    const gateUrl = new URL("/tunnel/go", reqUrl.origin);
-    gateUrl.searchParams.set("t", token);
-    return NextResponse.redirect(gateUrl.toString(), 302);
+    return NextResponse.redirect(targetUrl, 302);
   }
 
   // 构建上游请求头：优先使用客户端头（更像真实浏览器），缺失时用默认值
