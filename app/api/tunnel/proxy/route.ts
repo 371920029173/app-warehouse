@@ -63,6 +63,11 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  // 直接跳转模式：不经过代理，302 到目标地址，由用户浏览器直接访问，避免被目标站识别为代理而拦截
+  if (reqUrl.searchParams.get("direct") === "1") {
+    return NextResponse.redirect(targetUrl, 302);
+  }
+
   // 构建上游请求头：优先使用客户端头（更像真实浏览器），缺失时用默认值
   const forwardHeaders = new Headers();
   forwardHeaders.set(

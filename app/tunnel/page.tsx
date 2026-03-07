@@ -109,13 +109,22 @@ export default function TunnelPage() {
               <p>你的专属隧道链接（仅当前登录用户可见）：</p>
               <div className="flex flex-wrap items-center gap-2">
                 <a
+                  href={`${tunnelUrl}${tunnelUrl.includes("?") ? "&" : "?"}direct=1`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/30 px-3 py-2 text-emerald-300 transition-colors hover:bg-emerald-600/50"
+                >
+                  <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                  直接跳转（推荐，不易被目标站拦截）
+                </a>
+                <a
                   href={tunnelUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg bg-amber-500/20 px-3 py-2 text-accent-gold transition-colors hover:bg-amber-500/30 hover:text-amber-300"
                 >
                   <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                  在新窗口直接打开
+                  经代理打开
                 </a>
                 <button
                   type="button"
@@ -128,7 +137,7 @@ export default function TunnelPage() {
               </div>
               <p className="break-all font-mono text-[11px] text-neutral-500">{tunnelUrl}</p>
               <p className="text-[11px] text-neutral-500">
-                若目标站出现安全验证/人机校验页，属该站策略，可换其他站点或网络再试。
+                优先用「直接跳转」：由你本地浏览器访问目标，不易被拦截。经代理打开时，目标站可能因人机校验而阻断。
               </p>
               {showFrame && (
                 <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
