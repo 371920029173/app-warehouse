@@ -4,11 +4,54 @@ import { auth } from "@/lib/auth";
 
 export const runtime = "edge";
 
+const MAX_HTML_REWRITE = 2 * 1024 * 1024; // 2MB，超过则不重写链接
+
+/** 重写 HTML 内链接，使点击后继续走本代理，实现「梯子」：仅本页及由此打开的页面经代理 */
+function rewriteHtmlLinks(
+  html: string,
+  proxyBase: string,
+  baseUrl: string
+): string {
+  const base = new URL(baseUrl);
+  const baseOrigin = base.origin;
+
+  function toProxyUrl(url: string): string {
+    return proxyBase + encodeURIComponent(url);
+  }
+
+  function rewriteAttr(
+    attr: "href" | "src" | "action",
+    body: string
+  ): string {
+    // 绝对 http(s) 链接
+    body = body.replace(
+      new RegExp(attr + '="(https?:\\/\\/[^"]*)"', "gi"),
+      (_, url) => attr + '="' + toProxyUrl(url) + '"'
+    );
+    // 绝对路径 /path
+    body = body.replace(
+      new RegExp(attr + '="(\\/[^"]*)"', "gi"),
+      (_, path) => attr + '="' + toProxyUrl(baseOrigin + path) + '"'
+    );
+    // 相对路径（不含 # 开头、不含 //、不含 http:）
+    body = body.replace(
+      new RegExp(attr + '="((?!https?:)(?!//)(?!#)[^"]*)"', "gi"),
+      (_, rel) => attr + '="' + toProxyUrl(new URL(rel, baseUrl).href) + '"'
+    );
+    return body;
+  }
+
+  let out = html;
+  out = rewriteAttr("href", out);
+  out = rewriteAttr("src", out);
+  out = rewriteAttr("action", out);
+  return out;
+}
+
 /**
- * 软隧道代理：基于 Cloudflare 边缘的受控代理（参考 Workers Streams API 与反向代理最佳实践）
- * - 流式透传响应体，不整包缓冲
- * - 重写 3xx Location，使重定向继续走本代理，隧道内跳转不离开
- * - 使用常见浏览器头并可选转发客户端头，降低目标站人机校验
+ * 软隧道代理：梯子效果 = 本页及由此打开的页面均经代理
+ * - 3xx Location 重写为经本代理
+ * - 200 text/html 内链接重写为经本代理，点击后继续走隧道
  */
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -120,7 +163,35 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // 流式透传响应体（Cloudflare Workers/Edge 推荐：Response(body, { headers })，不缓冲）
+  // 200 HTML：重写页面内链接，使点击后继续走本代理（梯子 = 仅本页及由此打开的页面）
+  const contentType = upstreamRes.headers.get("content-type") || "";
+  if (
+    status === 200 &&
+    contentType.toLowerCase().includes("text/html")
+  ) {
+    const raw = await upstreamRes.text();
+    headers.delete("content-encoding");
+    if (raw.length <= MAX_HTML_REWRITE) {
+      const proxyUrl = new URL(reqUrl.pathname, reqUrl.origin);
+      const proxyBase =
+        proxyUrl.origin +
+        proxyUrl.pathname +
+        "?id=" +
+        encodeURIComponent(id) +
+        "&url=";
+      const rewritten = rewriteHtmlLinks(raw, proxyBase, targetUrl);
+      headers.set(
+        "Content-Length",
+        String(new TextEncoder().encode(rewritten).length)
+      );
+      return new NextResponse(rewritten, { status, headers });
+    }
+    // 过大不重写，直接返回原文
+    headers.set("Content-Length", String(new TextEncoder().encode(raw).length));
+    return new NextResponse(raw, { status, headers });
+  }
+
+  // 非 HTML：流式透传
   return new NextResponse(upstreamRes.body, {
     status,
     headers,
