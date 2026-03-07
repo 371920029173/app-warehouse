@@ -5,18 +5,8 @@ import { FakeAdSlot } from "./FakeAdSlot";
 
 const ROTATE_INTERVAL_MS = 6000;
 const SLOT_IDS = Array.from({ length: 10 }, (_, i) => `flow-${i + 1}`);
-const SLOT_LABELS = [
-  "推荐",
-  "热门应用",
-  "限时福利",
-  "精选工具",
-  "新品上架",
-  "编辑推荐",
-  "本周精选",
-  "人气榜单",
-  "限时折扣",
-  "更多推荐",
-];
+/** AdSense 仅允许使用「广告」或「赞助链接」作为标签，不得使用误导性标题 */
+const SLOT_LABEL = "广告";
 
 /** 每个广告位点击跳转的落地页，可后续改为后台配置 */
 const SLOT_CLICK_URLS: (string | undefined)[] = [
@@ -70,7 +60,7 @@ export function AdBar() {
     <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl overflow-hidden transition-shadow duration-300 hover:shadow-lg hover:shadow-black/20">
       <div className="px-4 py-2">
         <p className="text-xs font-medium uppercase tracking-wider text-neutral-400">
-          广告 · 每 6 秒切换 · 点击进入得 1 触点（每位每日限 1 次）
+          广告 · 每 6 秒切换
         </p>
       </div>
       <div className="px-3 pb-3 pt-0">
@@ -86,7 +76,7 @@ export function AdBar() {
             >
               <FakeAdSlot
                 slotId={slotId}
-                title={SLOT_LABELS[i]}
+                title={SLOT_LABEL}
                 className="h-full min-h-0"
                 clickUrl={SLOT_CLICK_URLS[i]}
               />

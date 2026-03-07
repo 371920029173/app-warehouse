@@ -87,7 +87,7 @@ export default async function AccountPage() {
           </p>
           <p className="text-2xl font-semibold text-accent-gold">{balance}</p>
           <p className="text-[11px]">
-            · 点击站内广告获得触点
+            · 赞助链接访问可获得触点（每广告位每日限 1 次）
             <br />· 邀请好友注册获得更多触点
             <br />· 使用 Cloudflare 隧道每 15 分钟消耗 1 触点
           </p>

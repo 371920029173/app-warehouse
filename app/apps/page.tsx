@@ -88,7 +88,7 @@ export default function AppsPage({ searchParams }: Props) {
           广告与推荐
         </h2>
         <div className="card-elevated rounded-xl border border-white/10 p-3 text-[11px] text-accent-silver transition-shadow duration-300 hover:shadow-lg">
-          <p>顶部广告栏不可折叠，共 10 个位、每 6 秒切换。点击广告进入即得 1 触点（每位每日限 1 次）。</p>
+          <p>顶部广告栏不可折叠，共 10 个位、每 6 秒切换。</p>
         </div>
         <div className="card-elevated flex min-h-[120px] items-center justify-center rounded-xl border border-dashed border-accent-silver/30 bg-neutral-dark/50 text-xs text-accent-silver/60 transition-colors duration-200">
           （暂无内容）

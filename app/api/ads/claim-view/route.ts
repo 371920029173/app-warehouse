@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   const userId = (session?.user as { id?: string })?.id;
   if (!userId) {
     return NextResponse.json(
-      { message: "请先登录后再通过点击广告获取触点" },
+      { message: "请先登录" },
       { status: 401 }
     );
   }

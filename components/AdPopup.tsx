@@ -49,11 +49,11 @@ export function AdPopup({ open, onClose, title = "观看广告获得触点" }: P
           </button>
         </div>
         <p className="mb-3 text-xs text-neutral-400">
-          点击下方广告进入即可获得 1 触点，用于开启隧道。
+          下方为赞助链接，点击可前往合作方页面。
         </p>
         <FakeAdSlot
           slotId="popup-tunnel"
-          title="隧道触点广告"
+          title="赞助链接"
           className="min-h-[120px]"
           clickUrl="https://www.cloudflare.com/products/zero-trust/"
         />

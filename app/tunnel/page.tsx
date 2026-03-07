@@ -27,7 +27,7 @@ export default function TunnelPage() {
       });
 
       if (res.status === 402) {
-        setStatus("触点不足。请观看下方广告获得触点后再试。");
+        setStatus("触点不足。请通过赞助链接或邀请好友获得触点后再试。");
         setShowAdPopup(true);
         return;
       }
@@ -161,7 +161,7 @@ export default function TunnelPage() {
       <AdPopup
         open={showAdPopup}
         onClose={() => setShowAdPopup(false)}
-        title="触点不足 · 点击广告获得 1 触点"
+        title="触点不足 · 通过赞助链接获得触点"
       />
     </div>
   );
