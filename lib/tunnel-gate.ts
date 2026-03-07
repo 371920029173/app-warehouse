@@ -39,7 +39,10 @@ async function hmacSign(message: string): Promise<ArrayBuffer> {
   return crypto.subtle.sign("HMAC", key, new TextEncoder().encode(message));
 }
 
-async function hmacVerify(message: string, signature: ArrayBuffer): Promise<boolean> {
+async function hmacVerify(
+  message: string,
+  signature: BufferSource
+): Promise<boolean> {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(GATE_SECRET),
@@ -79,8 +82,8 @@ export async function verifyTunnelGateToken(
   } catch {
     return null;
   }
-  const sigBuf = fromBase64Url(sigB64).buffer;
-  const ok = await hmacVerify(payloadStr, sigBuf);
+  const sigBytes = fromBase64Url(sigB64);
+  const ok = await hmacVerify(payloadStr, sigBytes);
   if (!ok) return null;
   let payload: GatePayload;
   try {
