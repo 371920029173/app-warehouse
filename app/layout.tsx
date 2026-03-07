@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AdBar } from "@/components/AdBar";
+import { ConditionalAdBar } from "@/components/LayoutWithAd";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -67,9 +67,7 @@ export default function RootLayout({
               </nav>
             </div>
           </header>
-          <div className="border-b border-white/5 px-4 py-2 md:px-6">
-            <AdBar />
-          </div>
+          <ConditionalAdBar />
           <main className="flex-1">{children}</main>
           <footer className="border-t border-accent-silver/20 bg-neutral-dark/80">
             <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-4 text-[11px] text-accent-silver md:flex-row md:px-6">

@@ -281,10 +281,13 @@ const BASE_APPS: AppMeta[] = [
   }
 ];
 
+/** 占位应用（脚本生成的「分类名 N」）不参与展示，仅保留真实应用 */
+const isPlaceholder = (app: AppMeta) => /-gen-\d+$/.test(app.slug);
+
 const _allApps: AppMeta[] = [...BASE_APPS, ...APPS_EXTENDED, ...(APPS_GENERATED as AppMeta[])];
-export const APPS: AppMeta[] = _allApps.filter(
-  (app, i, arr) => arr.findIndex((a) => a.slug === app.slug) === i
-);
+export const APPS: AppMeta[] = _allApps
+  .filter((app, i, arr) => arr.findIndex((a) => a.slug === app.slug) === i)
+  .filter((app) => !isPlaceholder(app));
 
 export function searchApps(keyword: string): AppMeta[] {
   const q = keyword.trim().toLowerCase();
