@@ -1,6 +1,7 @@
-import { redirect } from "next/navigation";
 import { verifyTunnelGateToken } from "@/lib/tunnel-gate";
 import { GateRedirect } from "./GateRedirect";
+
+export const runtime = "edge";
 
 type Props = {
   searchParams: Promise<{ t?: string }>;
