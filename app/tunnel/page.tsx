@@ -110,12 +110,10 @@ export default function TunnelPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <a
                   href={`${tunnelUrl}${tunnelUrl.includes("?") ? "&" : "?"}direct=1`}
-                  target="_blank"
-                  rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/30 px-3 py-2 text-emerald-300 transition-colors hover:bg-emerald-600/50"
                 >
                   <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                  一键跳转（推荐，由本地浏览器打开，不易被拦截）
+                  一键跳转（推荐，本页跳转后打开目标，确保登录态有效）
                 </a>
                 <a
                   href={tunnelUrl}
@@ -137,7 +135,7 @@ export default function TunnelPage() {
               </div>
               <p className="break-all font-mono text-[11px] text-neutral-500">{tunnelUrl}</p>
               <p className="text-[11px] text-neutral-500">
-                推荐用「一键跳转」：校验通过后由你本地浏览器打开目标，不易被目标站拦截。经代理打开时，目标站可能因人机校验而阻断。
+                点击「一键跳转」后会在本页跳转到目标（请勿用新标签打开该链接，否则可能无法带登录态）。若提示未登录，请先刷新隧道页再试。
               </p>
               {showFrame && (
                 <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
