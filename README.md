@@ -7,12 +7,14 @@
 - **软隧道**：基于 Cloudflare Pages Functions 的受控代理，面向中国用户的可访问性优化；
 - **广告适配**：预留多处 AdSense 友好广告位。
 
-### 1. 本地开发
+### 1. 本地开发与构建自检
 
 ```bash
 npm install
 npm run dev
 ```
+
+**推送前建议**：在本地执行 `npm run build`，可模拟 Cloudflare 的 TypeScript 与 Next 构建，减少远程构建失败。快速类型检查可运行 `npm run build:check`。
 
 需要准备的环境变量（在 Cloudflare Pages / 本地 `.env` 中设置）：
 

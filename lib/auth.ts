@@ -1,12 +1,11 @@
 import NextAuth from "next-auth";
+import { getServerSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import type { NextAuthConfig } from "next-auth";
 import { getDB } from "@/lib/db";
-import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 
-export const authConfig: NextAuthConfig = {
+export const authConfig = {
   providers: [
     Credentials({
       id: "email-login",
@@ -48,18 +47,18 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
-        token.id = (user as any).id;
+        token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token?.id && session.user) {
-        (session.user as any).id = token.id;
+        session.user.id = token.id;
       }
       return session;
     },
@@ -69,5 +68,10 @@ export const authConfig: NextAuthConfig = {
   },
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+const nextAuthHandler = NextAuth(authConfig);
+
+export const handler = nextAuthHandler;
+export async function auth() {
+  return getServerSession(authConfig);
+}
 

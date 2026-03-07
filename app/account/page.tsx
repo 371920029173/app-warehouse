@@ -107,10 +107,10 @@ export default async function AccountPage() {
             最近隧道使用
           </p>
           <div className="space-y-2 text-[11px]">
-            {tunnelRows.results.length === 0 && (
+            {(tunnelRows.results?.length ?? 0) === 0 && (
               <p className="text-accent-silver/80">暂未使用过 Cloudflare 隧道。</p>
             )}
-            {tunnelRows.results.map((row: TunnelRow) => (
+            {(tunnelRows.results ?? []).map((row: TunnelRow) => (
               <div
                 key={row.id}
                 className="flex items-center justify-between gap-2 rounded-lg border border-accent-silver/20 bg-neutral-dark/60 px-2 py-1.5"
@@ -135,12 +135,12 @@ export default async function AccountPage() {
           收藏应用
         </p>
         <div className="space-y-2 text-[11px]">
-          {favRows.results.length === 0 && (
+          {(favRows.results?.length ?? 0) === 0 && (
             <p className="text-accent-silver/80">
               暂无收藏，去应用仓库看看感兴趣的应用吧。
             </p>
           )}
-          {favRows.results.map((row: FavRow, idx: number) => (
+          {(favRows.results ?? []).map((row: FavRow, idx: number) => (
             <div
               key={`${row.app_name}-${idx}`}
               className="flex items-center justify-between gap-2 rounded-lg border border-accent-silver/20 bg-neutral-dark/60 px-2 py-1.5"
