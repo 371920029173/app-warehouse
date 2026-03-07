@@ -19,8 +19,7 @@
     "incremental": true,
     "types": [
       "next",
-      "next/types/global",
-      "next-auth"
+      "next/types/global"
     ],
     "baseUrl": ".",
     "paths": {
