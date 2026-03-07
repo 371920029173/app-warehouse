@@ -115,7 +115,7 @@ export default function TunnelPage() {
                   className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/30 px-3 py-2 text-emerald-300 transition-colors hover:bg-emerald-600/50"
                 >
                   <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-                  直接跳转（推荐，不易被目标站拦截）
+                  直接跳转（经闸门页验证后跳转，保留隧道体验）
                 </a>
                 <a
                   href={tunnelUrl}
@@ -137,7 +137,7 @@ export default function TunnelPage() {
               </div>
               <p className="break-all font-mono text-[11px] text-neutral-500">{tunnelUrl}</p>
               <p className="text-[11px] text-neutral-500">
-                优先用「直接跳转」：由你本地浏览器访问目标，不易被拦截。经代理打开时，目标站可能因人机校验而阻断。
+                直接跳转：先进入本站闸门页验证，再自动打开目标（由你本地浏览器访问，不易被拦截）。经代理打开时，目标站可能因人机校验而阻断。
               </p>
               {showFrame && (
                 <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
