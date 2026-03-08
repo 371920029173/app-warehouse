@@ -110,7 +110,7 @@ export default function AppDetailPage({ params }: Props) {
           <p className="font-semibold text-neutral-light">收藏与触点提示</p>
           <p>
             登录后可收藏该应用及指定版本，收藏记录会同步到 Cloudflare D1。
-            赞助链接访问可获得触点，用于后续 Cloudflare 隧道使用。
+            赞助链接访问可获得触点，用于参与站内权益。
           </p>
         </div>
       </aside>

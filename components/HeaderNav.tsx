@@ -27,12 +27,6 @@ export function HeaderNav() {
         应用仓库
       </Link>
       <Link
-        href="/tunnel"
-        className="text-neutral-light/80 transition-colors duration-200 hover:text-neutral-light"
-      >
-        Cloudflare 隧道
-      </Link>
-      <Link
         href="/apps/search"
         className="flex items-center gap-1.5 text-neutral-light/80 transition-colors duration-200 hover:text-neutral-light"
       >

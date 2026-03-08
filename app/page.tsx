@@ -7,23 +7,22 @@ export default function HomePage() {
         <div className="space-y-6">
           <p className="inline-flex items-center gap-2 rounded-pill border border-accent-silver/40 bg-neutral-dark/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-accent-silver/80">
             <span className="h-1.5 w-1.5 rounded-full bg-accent-gold" />
-            通用应用仓库 · Cloudflare 免费隧道 · AdSense 变现
+            通用应用仓库 · 触点与赞助链接 · AdSense 变现
           </p>
           <h1 className="text-3xl font-semibold leading-tight md:text-4xl">
             一站式 <span className="text-accent-gold">应用仓库</span>{" "}
-            与{" "}
-            <span className="text-accent-gold">Cloudflare 隧道触点体系</span>
+            与 <span className="text-accent-gold">触点体系</span>
           </h1>
           <p className="max-w-xl text-sm text-accent-silver md:text-base">
-            AppWarehouse 聚合 8 大通用类别的高质量应用，提供版本导航与官网跳转，
-            同时结合触点货币体系与 Cloudflare 隧道，为中国用户提供高效、可控的访问体验。
+            AppWarehouse 聚合 8 大通用类别的高质量应用，提供版本导航与官网跳转；
+            点击赞助链接可获得触点，用于参与站内权益与后续扩展。
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Link href="/apps" className="btn-primary">
               浏览应用仓库
             </Link>
-            <Link href="/tunnel" className="btn-secondary">
-              启动 Cloudflare 隧道
+            <Link href="/apps" className="btn-secondary">
+              去赚触点（赞助链接）
             </Link>
           </div>
         </div>

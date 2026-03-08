@@ -7,9 +7,9 @@ import { HeaderNav } from "@/components/HeaderNav";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "AppWarehouse · 通用应用仓库与触点隧道",
+  title: "AppWarehouse · 通用应用仓库与触点",
   description:
-    "AppWarehouse 是基于 Cloudflare 免费生态构建的通用应用仓库与 Cloudflare 隧道平台，支持应用分类导航、版本跳转、触点货币体系与广告变现。",
+    "AppWarehouse 基于 Cloudflare 免费生态，提供应用分类导航、版本跳转、触点体系与赞助链接变现。",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     apple: "/favicon.svg",
@@ -39,7 +39,7 @@ export default function RootLayout({
                     AppWarehouse
                   </span>
                   <span className="text-xs text-accent-silver">
-                    通用应用仓库 · 隧道
+                    通用应用仓库
                   </span>
                 </div>
               </a>
@@ -50,7 +50,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <footer className="border-t border-accent-silver/20 bg-neutral-dark/80">
             <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-4 text-[11px] text-accent-silver md:flex-row md:px-6">
-              <p>© {new Date().getFullYear()} AppWarehouse · 通用应用仓库与触点隧道</p>
+              <p>© {new Date().getFullYear()} AppWarehouse · 通用应用仓库与触点</p>
               <div className="flex flex-wrap items-center gap-3">
                 <span>部署于 Cloudflare Pages</span>
                 <a

@@ -13,7 +13,7 @@ export default async function AccountPage() {
       <div className="layout-shell max-w-2xl">
         <div className="card-elevated space-y-3 p-6 text-sm text-accent-silver">
           <p className="text-neutral-light">
-            需要登录后才能访问个人中心与触点、隧道记录。
+            需要登录后才能访问个人中心与触点记录。
           </p>
           <a href="/login" className="btn-primary inline-flex justify-center">
             去登录 / 注册
@@ -34,25 +34,11 @@ export default async function AccountPage() {
 
   const balance = balanceRow?.balance ?? 0;
 
-  type TunnelRow = {
-    id: string;
-    start_time: string;
-    end_time: string | null;
-    points_consumed: number;
-    auto_renew: number;
-  };
   type FavRow = {
     app_name: string;
     app_version: string;
     created_at: string;
   };
-
-  const tunnelRows = await db
-    .prepare(
-      "SELECT id, start_time, end_time, points_consumed, auto_renew FROM tunnel_usage WHERE user_id = ? ORDER BY start_time DESC LIMIT 20"
-    )
-    .bind(user.id)
-    .all<TunnelRow>();
 
   const favRows = await db
     .prepare(
@@ -77,7 +63,7 @@ export default async function AccountPage() {
             {user.name || "未设置昵称"} · {user.email}
           </p>
           <p className="text-xs text-accent-silver/90">
-            你的触点余额、隧道记录与收藏都会与该账户绑定，并存储于 Cloudflare D1。
+            你的触点余额与收藏都会与该账户绑定，并存储于 Cloudflare D1。
           </p>
           <LogoutButton />
         </div>
@@ -89,7 +75,6 @@ export default async function AccountPage() {
           <p className="text-[11px]">
             · 赞助链接访问可获得触点（每广告位每日限 1 次）
             <br />· 邀请好友注册获得更多触点
-            <br />· 使用 Cloudflare 隧道每 15 分钟消耗 1 触点
           </p>
         </div>
       </section>
@@ -103,32 +88,6 @@ export default async function AccountPage() {
           <p className="text-[11px]">
             通过该链接注册的新用户，会为你带来 5 个触点奖励，同时可逐步解锁“无广告”权益。
           </p>
-        </div>
-        <div className="card-elevated space-y-3 p-4 text-sm text-accent-silver">
-          <p className="text-xs uppercase tracking-[0.16em] text-accent-silver">
-            最近隧道使用
-          </p>
-          <div className="space-y-2 text-[11px]">
-            {(tunnelRows.results?.length ?? 0) === 0 && (
-              <p className="text-accent-silver/80">暂未使用过 Cloudflare 隧道。</p>
-            )}
-            {(tunnelRows.results ?? []).map((row: TunnelRow) => (
-              <div
-                key={row.id}
-                className="flex items-center justify-between gap-2 rounded-lg border border-accent-silver/20 bg-neutral-dark/60 px-2 py-1.5"
-              >
-                <span>
-                  {new Date(row.start_time).toLocaleString("zh-CN", {
-                    hour12: false
-                  })}
-                </span>
-                <span>
-                  消耗 {row.points_consumed} 触点 ·{" "}
-                  {row.end_time ? "已结束" : "进行中"}
-                </span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
